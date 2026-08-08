@@ -30,19 +30,23 @@ This project demonstrates a practical QA test suite built around a real, public 
 **Total: 16/16 tests passing**
 
 ## Project Structure
+
+```
+
 src/
 ├── main/
-│ ├── java/com/sobi/qa/
-│ │ ├── model/ # Jackson model classes (API response mapping)
-│ │ └── server/ # Lightweight local HTTP server for the mock UI
-│ └── resources/
-│ └── calculator.html # Mock pension forecast calculator page
+│   ├── java/com/sobi/qa/
+│   │   ├── model/          # Jackson model classes (API response mapping)
+│   │   └── server/         # Lightweight local HTTP server for the mock UI
+│   └── resources/
+│       └── calculator.html # Mock pension forecast calculator page
 └── test/
-└── java/com/sobi/qa/
-├── CurrencyConversionTest.java
-├── PensionForecastUiTest.java
-└── NegativeTestingTest.java
-
+    └── java/com/sobi/qa/
+        ├── CurrencyConversionTest.java
+        ├── PensionForecastUiTest.java
+        └── NegativeTestingTest.java
+        
+```
 
 ## Running the Tests
 
