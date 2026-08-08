@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <title>Pensionsprognos</title>
+</head>
+<body>
+    <h1>Pensionsprognos</h1>
+
+    <form id="forecastForm">
+        <label>
+            Ålder:
+            <input type="number" id="age" value="30">
+        </label>
+        <br>
+        <label>
+            Månadssparande (kr):
+            <input type="number" id="monthlySavings" value="2000">
+        </label>
+        <br>
+        <label>
+            Risknivå:
+            <select id="riskLevel">
+                <option value="low">Låg</option>
+                <option value="medium" selected>Medel</option>
+                <option value="high">Hög</option>
+            </select>
+        </label>
+        <br>
+        <button type="submit" id="submitBtn">Beräkna prognos</button>
+    </form>
+
+    <div id="result" style="margin-top: 20px;"></div>
+    <div id="errorMessage" style="color: red; display: none;"></div>
+
+    <script>
+        document.getElementById('forecastForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const age = document.getElementById('age').value;
+            const monthlySavings = document.getElementById('monthlySavings').value;
+            const riskLevel = document.getElementById('riskLevel').value;
+
+            const resultDiv = document.getElementById('result');
+            const errorDiv = document.getElementById('errorMessage');
+
+            resultDiv.textContent = '';
+            errorDiv.style.display = 'none';
+
+            try {
+                const response = await fetch('/api/forecast', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ age, monthlySavings, riskLevel })
+                });
+
+                if (!response.ok) {
+                    throw new Error('API-fel: ' + response.status);
+                }
+
+                const data = await response.json();
+
+                resultDiv.innerHTML = `
+                    <p>Förväntat värde vid pension: <strong>${data.projectedValue} kr</strong></p>
+                    <p>Årlig avkastning: <strong>${data.annualReturn}%</strong></p>
+                `;
+
+            } catch (err) {
+                errorDiv.textContent = 'Något gick fel vid beräkningen. Försök igen senare.';
+                errorDiv.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>
